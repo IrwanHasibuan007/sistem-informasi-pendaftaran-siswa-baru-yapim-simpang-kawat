@@ -1,0 +1,147 @@
+<?php
+$kode = mysql_query("select max(NIS) from akutansi") or die (mysql_error());
+$datakode = mysql_fetch_array($kode);
+if ($datakode) {
+    $nilaikode = substr($datakode[0], 1);
+    $kode =  (int) $nilaikode;
+    $kode = $kode + 1 ;
+    $hasilkode = "191".str_pad($kode, 3, "0", STR_PAD_LEFT);
+
+}
+else{
+    $hasilkode = "191001";
+}
+?>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h2 align="center" class="panel-title">FORM TAMBAH DATA SISWA BARU</h2>
+                </div>
+                <div class="panel-body">
+                    <!--membuat form untuk tambah data-->
+                    <form class="form-horizontal" action="" method="post">
+                        <div class="form-group">
+                            <label for="NIS" class="col-sm-3 control-label">NIS</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="NIS" class="form-control" id="inputEmail3" value="<?php echo $hasilkode; ?>" required>
+                            </div>
+                        </div>
+						 <div class="form-group">
+                            <label for="no_rak" class="col-sm-3 control-label">Nomor Rak</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="no_rak" class="form-control" id="inputEmail3" placeholder="Inputkan Nomor Rak atau Lemari" required>
+                            </div>
+                        </div>
+						 <div class="form-group">
+                            <label for="no_laci" class="col-sm-3 control-label">Nomor Laci</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="no_laci" class="form-control" id="inputEmail3" placeholder="Inputkan Nomor Laci" required>
+                            </div>
+                        </div>
+						 <div class="form-group">
+                            <label for="no_boks" class="col-sm-3 control-label">Nomor Boks</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="no_boks" class="form-control" id="inputEmail3" placeholder="Inputkan Nomor Boks" required>
+                            </div>
+                        </div>
+						 <div class="form-group">
+                            <label for="para_pihak" class="col-sm-3 control-label">Para Pihak</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="para_pihak" class="form-control" id="inputEmail3" placeholder="Inputkan Para Pihak yang Terlibat" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="no_perkara" class="col-sm-3 control-label">Nomor Perkara</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="no_perkara"class="form-control" id="inputEmail3" placeholder="Inputkan Nomor Perkara" required>
+                            </div>
+                        </div>
+
+                         <div class="form-group">
+                            <label for="tgl_masuk" class="col-sm-3 control-label">Tanggal Masuk</label>
+                            <div class="col-sm-3">
+                                <input type="date" name="tgl_masuk" class="form-control" id="inputEmail3" placeholder="Inputkan Tanggal Masuk" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pengantar" class="col-sm-3 control-label">Pengantar Berkas</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="pengantar" class="form-control" id="inputPassword3" placeholder="Inputkan Staff Pengantar Berkas" required>
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <label for="penerima" class="col-sm-3 control-label">Penerima Berkas</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="penerima" class="form-control" id="inputPassword3" placeholder="Inputkan Staff Penerima Berkas" required>
+                            </div>
+                        </div>
+
+
+                        <!--Status-->
+
+                        <div class="form-group">
+                            <label for="status" class="col-sm-3 control-label">Status</label>
+                            <div class="col-sm-2 col-xs-9">
+								<select name="status" class="form-control">
+									<option value="Ada">Ada</option>
+									<option value="Dipinjam">Dipinjam</option>
+									<option value="Penghapusan">Penghapusan</option>
+								</select>
+                            </div>
+                        </div>
+                        <!--Akhir Status-->
+
+						<div class="form-group">
+                            <label for="ket" class="col-sm-3 control-label">Keterangan</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="ket" class="form-control" id="inputPassword3" placeholder="Inputkan Keterangan">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <button type="submit" class="btn btn-success">
+                                    <span class="fa fa-save"></span> Simpan Arsip</button>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+                <div class="panel-footer">
+                    <a href="?page=arsip&actions=tampil" class="btn btn-danger btn-sm">
+                        Kembali Ke Data Arsip
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<?php
+include"koneksi.php";
+
+if($_POST){
+    //Ambil data dari form
+  $nis=$_POST['NIS'];
+	$nama=$_POST['nama'];
+	$lahir=$_POST['tanggal_lahir'];
+	$alamat=$_POST['alamat'];
+  $daftar=$_POST['tanggal_taftar'];
+	$asal=$_POST['asal_sekolah'];
+    //buat sql
+    $sql="INSERT INTO akutansi VALUES ('$nis','$nama','$lahir','$alamat','$daftar','$asal')";
+    $query=  mysqli_query($koneksi, $sql) or die ("SQL Simpan Arsip Error");
+    if ($query){
+        echo "<script>window.location.assign('?page=arsip&actions=tampil');</script>";
+    }else{
+        echo "<script>alert('Simpan Data Gagal');<script>";
+    }
+    }
+
+?>
